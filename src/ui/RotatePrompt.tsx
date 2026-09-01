@@ -12,8 +12,8 @@ const overlayStyle: CSSProperties = {
   justifyContent: "center",
   gap: 24,
   padding: 24,
-  background: COLORS.background,
-  color: COLORS.textPrimary,
+  background: COLORS.void,
+  color: COLORS.cream,
   fontFamily: FONT_BODY,
   textAlign: "center",
 };
@@ -58,7 +58,7 @@ function RotateIcon() {
         width="24"
         height="40"
         rx="4"
-        stroke={COLORS.textPrimary}
+        stroke={COLORS.cream}
         strokeWidth="3"
       />
       <path
