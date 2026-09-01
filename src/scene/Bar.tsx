@@ -33,10 +33,15 @@ const PATRON_LINES: readonly (readonly string[])[] = [
 
 const PATRON_COLORS = [COLORS.gold, COLORS.shamrock, COLORS.brass] as const;
 
+// Positions here are chosen to line up with the lighting rig in
+// src/scene/lighting/BarLights.tsx: the bar lamp sits at x=-5.5 (so the
+// counter lives on that side, not the opposite one), the screen spill
+// sits at x=1.5 (so the telly lives there, not co-located with the
+// counter), and the snug lamp sits at (4, 1) (so a table sits under it).
 const TABLE_POSITIONS: [number, number][] = [
   [-4, 1.5],
   [-1, 4],
-  [3, 3.5],
+  [4, 1],
 ];
 
 /** The room. Floor, walls, counter, tables, screen placeholder, door,
@@ -81,8 +86,9 @@ export function Bar() {
         <meshStandardMaterial color={COLORS.stout} {...WOOD} />
       </mesh>
 
-      {/* Bar counter, with a brass foot rail */}
-      <group position={[4.5, 0, -4.2]}>
+      {/* Bar counter, with a brass foot rail — positioned near the bar
+          lamp (x=-5.5 in BarLights.tsx), not across the room from it */}
+      <group position={[-5, 0, -4.2]}>
         <mesh castShadow position={[0, 0.5, 0]}>
           <boxGeometry args={[5, 1, 0.8]} />
           <meshStandardMaterial color={COLORS.mahogany} {...WOOD} />
@@ -99,8 +105,9 @@ export function Bar() {
         </mesh>
       </group>
 
-      {/* Toilets door */}
-      <group position={[-6, 1.1, -5.92]}>
+      {/* Toilets door — clear of the counter (now on the left) and the
+          telly (now near centre) */}
+      <group position={[5, 1.1, -5.92]}>
         <mesh castShadow>
           <boxGeometry args={[1, 2.2, 0.08]} />
           <meshStandardMaterial color={COLORS.mahogany} {...WOOD} />
@@ -111,11 +118,12 @@ export function Bar() {
         </mesh>
       </group>
 
-      {/* Casino machine stand-in */}
-      <CasinoMachine position={[-7.2, 0, -5]} />
+      {/* Casino machine stand-in — clear of the counter's new corner */}
+      <CasinoMachine position={[7.2, 0, -5]} />
 
-      {/* Wall-mounted screen placeholder */}
-      <Telly position={[4.5, 2.6, -5.85]} />
+      {/* Wall-mounted screen placeholder — at the screen spill's x=1.5,
+          so its glow lands on the wall around it, not on the counter */}
+      <Telly position={[1.5, 2.6, -5.85]} />
 
       {/* Tables */}
       {TABLE_POSITIONS.map((pos, i) => (
@@ -123,7 +131,7 @@ export function Bar() {
       ))}
 
       {/* NPCs */}
-      <Bartender basePosition={[4.5, -5.5]} />
+      <Bartender basePosition={[-5, -5.5]} />
       {TABLE_POSITIONS.map((pos, i) => (
         // i ranges over TABLE_POSITIONS, which is the same length as
         // PATRON_COLORS and PATRON_LINES, so both indices are always in range.
